@@ -130,6 +130,9 @@
                     doctor.left + 50 >= (viruses[virus].left) &&
                     doctor.top <= (viruses[virus].top + 50) &&
                     doctor.top >= viruses[virus].top
+                ) ||
+                (
+                    viruses[virus].top + 50 >= 800
                 )
             ) {
                 Swal.fire({
@@ -165,11 +168,42 @@
     }
 
     function gameLoop() {
-        let timer = setTimeout(gameLoop, 10);
+        let timer = setTimeout(gameLoop, 100);
         moveInjections();
         drawInjections();
         moveViruses();
         drawViruses();
+        if (viruses.length === 0) {
+            clearTimeout(timer);
+            Swal.fire(
+                'Good job!',
+                'You won! Play again?',
+                'success'
+            ).then((result) => {
+                if (result.isConfirmed) {
+                    injections = [];
+                    viruses = [
+                        {left: 200, top: 100},
+                        {left: 300, top: 100},
+                        {left: 400, top: 100},
+                        {left: 500, top: 100},
+                        {left: 600, top: 100},
+                        {left: 700, top: 100},
+                        {left: 800, top: 100},
+                        {left: 900, top: 100},
+                        {left: 200, top: 175},
+                        {left: 300, top: 175},
+                        {left: 400, top: 175},
+                        {left: 500, top: 175},
+                        {left: 600, top: 175},
+                        {left: 700, top: 175},
+                        {left: 800, top: 175},
+                        {left: 900, top: 175}
+                    ];
+                    gameLoop();
+                }
+            })
+        }
         let response = collisionDetection();
         if (response === "Stop") {
             clearTimeout(timer);

@@ -5,135 +5,135 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!--
-        1. HTML
-        2. CSS
-        3. div.background 1200x800
-        4. div.hero 50x50
-        5. move left / right (bonus: move up/down)  (bonus: move hero with mouse)
-        6. fire 17x47
-        7. game loop
-        8. div.enemy
-        9. enemy objects / enemy movement
-        10. collision detection
-    -->
-    <div id="background">
-        <div id="hero"></div>
-        <div id="missiles"></div>
-        <div id="enemies"></div>
-    </div>
+<!--
+    1. HTML
+    2. CSS
+    3. div.background 1200x800
+    4. div.hero 50x50
+    5. move left / right (bonus: move up/down)  (bonus: move hero with mouse)
+    6. fire 17x47
+    7. game loop
+    8. div.enemy
+    9. enemy objects / enemy movement
+    10. collision detection
+-->
+<div id="background">
+    <div id="doctor"></div>
+    <div id="injections"></div>
+    <div id="viruses"></div>
+</div>
 
-    <script>
-        let hero = {
-            left: 575,
-            top: 680
-        };
+<script>
+    let doctor = {
+        left: 575,
+        top: 680
+    };
 
-        let missiles = [];
+    let injections = [];
 
-        let enemies = [
-            { left: 200, top: 100 },
-            { left: 300, top: 100 },
-            { left: 400, top: 100 },
-            { left: 500, top: 100 },
-            { left: 600, top: 100 },
-            { left: 700, top: 100 },
-            { left: 800, top: 100 },
-            { left: 900, top: 100 },
-            { left: 200, top: 175 },
-            { left: 300, top: 175 },
-            { left: 400, top: 175 },
-            { left: 500, top: 175 },
-            { left: 600, top: 175 },
-            { left: 700, top: 175 },
-            { left: 800, top: 175 },
-            { left: 900, top: 175 }
-        ];
-        
+    let viruses = [
+        {left: 200, top: 100},
+        {left: 300, top: 100},
+        {left: 400, top: 100},
+        {left: 500, top: 100},
+        {left: 600, top: 100},
+        {left: 700, top: 100},
+        {left: 800, top: 100},
+        {left: 900, top: 100},
+        {left: 200, top: 175},
+        {left: 300, top: 175},
+        {left: 400, top: 175},
+        {left: 500, top: 175},
+        {left: 600, top: 175},
+        {left: 700, top: 175},
+        {left: 800, top: 175},
+        {left: 900, top: 175}
+    ];
 
-        document.onkeydown = function(e) {
-            if (e.key === "ArrowLeft") {
-                hero.left = hero.left - 10;
-                if (hero.left<=0){
-                    hero.left=0;
+
+    document.onkeydown = function (e) {
+        if (e.key === "ArrowLeft") {
+            doctor.left = doctor.left - 10;
+            if (doctor.left <= 0) {
+                doctor.left = 0;
+            }
+
+        }
+        if (e.key === "ArrowRight") {
+            doctor.left = doctor.left + 10;
+            if (doctor.left >= 1150) {
+                doctor.left = 1150;
+            }
+        }
+        if (e.key === " ") {
+            injections.push({
+                left: doctor.left + 20,
+                top: doctor.top - 20
+            });
+            drawInjections()
+        }
+        drawDoctor();
+    };
+
+
+    function drawDoctor() {
+        document.getElementById('doctor').style.left = doctor.left + 'px';
+        document.getElementById('doctor').style.top = doctor.top + 'px';
+    }
+
+    function drawInjections() {
+        document.getElementById('injections').innerHTML = "";
+        for (let i = 0; i < injections.length; i++) {
+            document.getElementById('injections').innerHTML += `<div class='injection' style='left:${injections[i].left}px; top:${injections[i].top}px'></div>`;
+        }
+    }
+
+    function moveInjections() {
+        for (let i = 0; i < injections.length; i++) {
+            injections[i].top = injections[i].top - 8
+        }
+    }
+
+    function drawViruses() {
+        document.getElementById('viruses').innerHTML = "";
+        for (let i = 0; i < viruses.length; i++) {
+            document.getElementById('viruses').innerHTML += `<div class='virus' style='left:${viruses[i].left}px; top:${viruses[i].top}px'></div>`;
+        }
+    }
+
+    function moveViruses() {
+        for (let i = 0; i < viruses.length; i++) {
+            viruses[i].top = viruses[i].top + 1;
+        }
+    }
+
+    function collisionDetection() {
+        for (let virus = 0; virus < viruses.length; virus++) {
+            for (let injection = 0; injection < injections.length; injection++) {
+                if (
+                    injections[injection].left >= viruses[virus].left &&
+                    injections[injection].left <= (viruses[virus].left + 50) &&
+                    injections[injection].top <= (viruses[virus].top + 50) &&
+                    injections[injection].top >= viruses[virus].top
+                ) {
+                    viruses.splice(virus, 1);
+                    injections.splice(injection, 1);
                 }
-
-            }
-            if (e.key === "ArrowRight") {
-                hero.left = hero.left + 10;
-                if (hero.left>=1150){
-                    hero.left=1150;
-                }
-            }
-            if (e.key === " ") {
-                missiles.push({
-                    left: hero.left + 20,
-                    top: hero.top - 20 
-                });
-                drawMissiles()
-            }
-            drawHero();
-        };
-
-
-        function drawHero() {
-            document.getElementById('hero').style.left = hero.left + 'px';
-            document.getElementById('hero').style.top = hero.top + 'px';
-        }
-
-        function drawMissiles() {
-            document.getElementById('missiles').innerHTML = "";
-            for(let i = 0 ; i < missiles.length ; i++ ) {
-                document.getElementById('missiles').innerHTML += `<div class='missile1' style='left:${missiles[i].left}px; top:${missiles[i].top}px'></div>`;
             }
         }
+    }
 
-        function moveMissiles() {
-            for(let i = 0 ; i < missiles.length ; i++ ) {
-                missiles[i].top = missiles[i].top - 8
-            }
-        }
+    function gameLoop() {
+        setTimeout(gameLoop, 50);
+        moveInjections();
+        drawInjections();
+        moveViruses();
+        drawViruses();
+        collisionDetection();
+    }
 
-        function drawEnemies() {
-            document.getElementById('enemies').innerHTML = "";
-            for(let i = 0 ; i < enemies.length ; i++ ) {
-                document.getElementById('enemies').innerHTML += `<div class='enemy' style='left:${enemies[i].left}px; top:${enemies[i].top}px'></div>`;
-            }
-        }
+    gameLoop()
 
-        function moveEnemies() {
-            for(let i = 0 ; i < enemies.length ; i++ ) {
-                enemies[i].top = enemies[i].top + 1;
-            }
-        }
-
-        function collisionDetection() {
-            for (let enemy = 0; enemy < enemies.length; enemy++) {
-                for (let missile = 0; missile < missiles.length; missile++) {
-                    if ( 
-                        missiles[missile].left >= enemies[enemy].left  &&
-                        missiles[missile].left <= (enemies[enemy].left + 50)  &&
-                        missiles[missile].top <= (enemies[enemy].top + 50)  &&
-                        missiles[missile].top >= enemies[enemy].top
-                    ) {
-                        enemies.splice(enemy, 1);
-                        missiles.splice(missile, 1);
-                    }
-                }
-            }
-        }
-
-        function gameLoop() {
-            setTimeout(gameLoop, 50);
-            moveMissiles();
-            drawMissiles();
-            moveEnemies();
-            drawEnemies();
-            collisionDetection();
-        }
-        
-        gameLoop()
-
-    </script>
+</script>
 </body>
 </html>

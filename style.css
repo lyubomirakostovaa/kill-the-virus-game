@@ -1,41 +1,41 @@
 div#background {
     width: 1200px;
     height: 800px;
-    background-image: url('assets/background1.jpg');
+    background-image: url('assets/background.jpg');
     position: absolute;
 }
 
-div#hero {
+div#doctor {
     width: 50px;
     height: 107px;
-    background-image: url('assets/hero1.png');
+    background-image: url('assets/doctor.png');
     position: absolute;
     left: 575px;
     top: 680px;
 }
 
-div#missiles {
+div#injections {
     width: 1200px;
     height: 800px;
     position: absolute;
 }
 
-div.missile1 {
+div.injection {
     width: 10px;
     height: 28px;
-    background-image: url('assets/missle11.png');
+    background-image: url('assets/injection.png');
     position: absolute;
 }
 
-div#enemies {
+div#viruses {
     width: 1200px;
     height: 800px;
     position: absolute;
 }
 
-div.enemy {
+div.virus {
     width: 50px;
     height: 50px;
-    background-image: url('assets/enemy1.png');
+    background-image: url('assets/virus.png');
     position: absolute;
 }

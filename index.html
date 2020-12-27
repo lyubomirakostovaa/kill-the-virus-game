@@ -11,6 +11,7 @@
     <div id="viruses"></div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
     let doctor = {
         left: 575,
@@ -198,9 +199,20 @@
         }
     }
 
-    gameLoop()
+    function startGame() {
+        Swal.fire(
+            'Hey!',
+            'Do you want to play a game?',
+            'question'
+        ).then((result) => {
+            if (result.isConfirmed) {
+                gameLoop();
+            }
+        })
+    }
+
+    startGame();
 
 </script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </body>
 </html>

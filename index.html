@@ -120,20 +120,65 @@
                     injections.splice(injection, 1);
                 }
             }
+            if (
+                doctor.left >= viruses[virus].left &&
+                doctor.left <= (viruses[virus].left + 50) &&
+                doctor.top <= (viruses[virus].top + 50) &&
+                doctor.top >= viruses[virus].top ||
+                (
+                    doctor.left + 50 <= viruses[virus].left + 50 &&
+                    doctor.left + 50 >= (viruses[virus].left) &&
+                    doctor.top <= (viruses[virus].top + 50) &&
+                    doctor.top >= viruses[virus].top
+                )
+            ) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'You died...Try again?',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        viruses = [
+                            {left: 200, top: 100},
+                            {left: 300, top: 100},
+                            {left: 400, top: 100},
+                            {left: 500, top: 100},
+                            {left: 600, top: 100},
+                            {left: 700, top: 100},
+                            {left: 800, top: 100},
+                            {left: 900, top: 100},
+                            {left: 200, top: 175},
+                            {left: 300, top: 175},
+                            {left: 400, top: 175},
+                            {left: 500, top: 175},
+                            {left: 600, top: 175},
+                            {left: 700, top: 175},
+                            {left: 800, top: 175},
+                            {left: 900, top: 175}
+                        ];
+                        gameLoop();
+                    }
+                });
+                return "Stop";
+            }
         }
     }
 
     function gameLoop() {
-        setTimeout(gameLoop, 50);
+        let timer = setTimeout(gameLoop, 10);
         moveInjections();
         drawInjections();
         moveViruses();
         drawViruses();
-        collisionDetection();
+        let response = collisionDetection();
+        if (response === "Stop") {
+            clearTimeout(timer);
+        }
     }
 
     gameLoop()
 
 </script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </body>
 </html>
